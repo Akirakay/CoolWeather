@@ -2,9 +2,11 @@ package com.skyline.coolweather.util;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.skyline.coolweather.db.City;
 import com.skyline.coolweather.db.County;
 import com.skyline.coolweather.db.Province;
+import com.skyline.coolweather.gson.Weather;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,12 +89,29 @@ public class Utility {
                     county.setWeatherId(countyObject.getString("weather_id"));
                     county.setCityId(cityId);
                     county.save();
-                    return true;
                 }
+                return true;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         return false;
+    }
+
+    /**
+     * 将返回的JSON数据解析成Weather
+     * @param response
+     * @return
+     */
+    public static Weather handleWeatherResponse(String response){
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+            String weatherContent = jsonArray.getJSONObject(0).toString();
+            return  new Gson().fromJson(weatherContent,Weather.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
