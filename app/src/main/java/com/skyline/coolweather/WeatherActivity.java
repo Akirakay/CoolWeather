@@ -1,5 +1,6 @@
 package com.skyline.coolweather;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.skyline.coolweather.gson.Forecast;
 import com.skyline.coolweather.gson.Weather;
+import com.skyline.coolweather.service.AutoUpdateService;
 import com.skyline.coolweather.util.HttpUtil;
 import com.skyline.coolweather.util.Utility;
 
@@ -215,5 +217,7 @@ public class WeatherActivity extends AppCompatActivity {
         sportText.setText(sport);
 
         weatherLayout.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 }
